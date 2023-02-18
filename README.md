@@ -1,4 +1,7 @@
-# Getting Started with Create React App
+# Project Description
+
+This is a nasa media search engine that allows you to search any thing related to Nasa
+
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
