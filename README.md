@@ -5,9 +5,12 @@ This is a nasa media search engine that allows you to search any thing related t
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 # Teck Stack Used
-React
-JavaScript
-Tailwind CSS (Make sure you configure it properly)
+React|
+JavaScript|
+Tailwind CSS (Make sure you configure it properly)|
+
+# To Clone
+1 clone or download the zip file and then go to the project directory , run npm install --force and then test the site by running npm start
 ## Available Scripts
 
 In the project directory, you can run:
