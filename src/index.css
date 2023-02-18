@@ -1,13 +1,51 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components{
+  .div-hero-logo-component{
+    @apply flex flex-col w-[95%] sm:mt-[40%]  mt-[60%] md:mt-[30%] lg:mt-[15%] my-auto mx-auto sm:w-[80%] md:w-[60%] lg:w-[40%] md:mx-auto
+  }
+
+  .div-search-box-component{
+    @apply flex flex-col w-[95%] mt-2  mx-auto sm:w-[80%] md:w-[60%] lg:w-[40%] focus:bg-transparent  rounded-full shadow-lg bg-[#0b3d91] justify-center md:mx-auto
+  }
+  .div-render-results-component{
+    @apply w-full md:w-[90%]  grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3  gap-3  items-center  mx-auto px-2
+  }
+
+  .div-resultscard-component{
+    @apply w-[95%] rounded-xl border-4 border-slate-300/10 shadow-xl shadow-black md:w-full sm:w-full h-[350px] mx-auto  hover:scale-105 ease-in-out duration-300 inline-block cursor-pointer relative transition
+  }
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body{
+
+
+    background-color: #060e1c;
+
+     
 }
+.custom-year-range-picker{
+    border-color: red;
+}
+.custom-year-range-picker .yrp-picker-box {
+    /* border-radius: 20px; */
+    background-color: transparent;
+   
+    color: black;
+    border-color:yellow;
+    outline: #1890ff;
+  }
+  
+  .custom-year-range-picker .yrp-picker-box span {
+    color: gainsboro;
+    outline: #1890ff;
+    border-color:red;
+  }
+  
+  .custom-year-range-picker .yrp-picker-box i {
+    border-color:gainsboro;
+    outline: #1890ff;
+    
+  }
