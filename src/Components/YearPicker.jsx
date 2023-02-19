@@ -10,6 +10,7 @@ export default function YearPicker({yearRange,setYearRange}) {
         onSelect={(startYear, endYear) => {
           setYearRange({ startYear, endYear });
         }}
+        
         startYear={yearRange?.startYear}
         endYear={yearRange?.endYear}
         style={{ maxWidth: "200px", width: "100%" }}

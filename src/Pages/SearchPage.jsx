@@ -4,7 +4,7 @@ import { BsEmojiFrown } from "react-icons/bs";
 import Search from "../Components/Search";
 import Logo from "../Components/Logo";
 import ResultsCard from "../Components/ResultsCard";
-import { searchQuery, searchQueryWithDates } from "../Services/apiServices";
+import { searchQuery, searchQueryWithDates,searchQuerySuggestions } from "../Services/apiServices";
 import YearPicker from "../Components/YearPicker";
 import { motion } from "framer-motion";
 
@@ -20,7 +20,6 @@ export default function SearchPage() {
 //  FETCHING PESISTED STATE FROM LOCAL STORAGE
   useEffect(() => {
     const isBackButton = localStorage.getItem("isBackButton");
-    console.log(isBackButton);
     if (isBackButton === "true") {
       const data = localStorage.getItem("prevSearchResults");
       setSearchValue(localStorage.getItem("prevSearchValue"));
@@ -28,7 +27,7 @@ export default function SearchPage() {
     }
     localStorage.setItem("isBackButton", "false");
   }, [searchError]);
-  console.log("these are my final suggestions", suggestions);
+  // console.log("these are my final suggestions", suggestions);
 //===============SHORTERNING THE SUGGESTIONS==================
   const truncateString = (str, num) => {
     if (str?.length > num) {
@@ -44,10 +43,15 @@ export default function SearchPage() {
     onSearchButton()
     
   }
+  /// get the data so that it can help with suggestions 
+  const handleSearch2=async(query)=>{
+    return  await searchQuerySuggestions(query);  
+  }
 
-// BUTTON TO SEARCH 
+//============================== BUTTON TO SEARCH ====================================
   const onSearchButton = () => {
     setSearched(searchValue);
+    setSuggestions([])
     const fetchData = async () => {
       try {
         //checking if the year Range was specified or Not
@@ -120,7 +124,9 @@ export default function SearchPage() {
           searchValue={searchValue}
           setSearchError={setSearchError}
           setResults={setResults}
+          handleSearch2={handleSearch2}
           setSuggestions={setSuggestions}
+          setYearRange={setYearRange}
         />
       </div>
       {/* ======================================= Suggestions ========================================= */}

@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { BsSearch } from "react-icons/bs";
 import{MdOutlineClear} from "react-icons/md"
 import { motion } from 'framer-motion';
-import { searchQuerySuggestions, searchQueryWithDates } from "../Services/apiServices";
 
 
-export default function Search({ searchValue,setSearchError, onSearchButton,setResults, setSearchValue, setSuggestions}) {
+
+export default function Search({ searchValue,setSearchError,setYearRange,handleSearch2, onSearchButton,setResults, setSearchValue, setSuggestions}) {
   const [ search,setSearch]=useState();
   const [ sugg,setSugg]=useState([]);
   const [ searchQuery,setSearchQuery]=useState();
@@ -29,16 +29,15 @@ export default function Search({ searchValue,setSearchError, onSearchButton,setR
     e.preventDefault();
     if(e.target.value.length>0){
       setSearchValue(e.target.value)
-     // console.log("Suggestions ready")
-      // call our api
-      const response = await searchQuerySuggestions(e.target.value);
+      // call our api to facilitate search box suggestions
+      const response = await handleSearch2(e.target.value);
       setSugg(response.data.collection.items)
+      
       match=sugg.filter((suggestion)=>{
         const regex= new RegExp(`${e.target.value}`,"gi")
         return suggestion.data[0]?.description?.match(regex)||suggestion.data[0].keywords?.filter(word=> {return word.match(regex)})
-      }).slice(0,3)
+      }).slice(0,3) // selecting the top 3 suggestion to output
       setSuggestions(match)
-      console.log(" Search Value", e.target.value)
     }
     // set suggestions
 
@@ -49,8 +48,10 @@ export default function Search({ searchValue,setSearchError, onSearchButton,setR
   // ============== HANDLE CLEAR INPUT BUTTON ==================
   const handleClear = ()=>{
     setSearchQuery("")
+    setYearRange({ startYear: "", endYear: "" })
     setSearchValue("")
   }
+
   // =========== HANDLE SEARCH BUTTON PRESS ======================
   const handleOnClick=()=>{
     if(searchQuery===""||searchQuery===undefined||searchQuery===null){ // Checking if the search query is not empty
@@ -61,7 +62,6 @@ export default function Search({ searchValue,setSearchError, onSearchButton,setR
       onSearchButton(searchQuery) // executing Search
     }
     
-
   }
   return (
     <div className=" text-gray-200  w-[100%]  mx-auto ">
