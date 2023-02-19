@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { BsSearch } from "react-icons/bs";
+import{MdOutlineClear} from "react-icons/md"
 import { motion } from 'framer-motion';
+import { searchQuerySuggestions, searchQueryWithDates } from "../Services/apiServices";
 
 
-export default function Search({ searchValue,setSearchError, onSearchButton,setResults, setSearchValue}) {
+export default function Search({ searchValue,setSearchError, onSearchButton,setResults, setSearchValue, setSuggestions}) {
   const [ search,setSearch]=useState();
+  const [ sugg,setSugg]=useState([]);
   const [ searchQuery,setSearchQuery]=useState();
   // checking if we are coming back for show page
   useEffect(()=>{
@@ -21,11 +24,32 @@ export default function Search({ searchValue,setSearchError, onSearchButton,setR
     }
   };
 
-  const handleOnChange=(e)=>{
+  const handleOnChange= async(e)=>{
+    let match=[];
     e.preventDefault();
+    if(e.target.value.length>0){
+      setSearchValue(e.target.value)
+     // console.log("Suggestions ready")
+      // call our api
+      const response = await searchQuerySuggestions(e.target.value);
+      setSugg(response.data.collection.items)
+      match=sugg.filter((suggestion)=>{
+        const regex= new RegExp(`${e.target.value}`,"gi")
+        return suggestion.data[0]?.description?.match(regex)||suggestion.data[0].keywords?.filter(word=> {return word.match(regex)})
+      }).slice(0,3)
+      setSuggestions(match)
+      console.log(" Search Value", e.target.value)
+    }
+    // set suggestions
+
     setSearchQuery(e.target.value)
     setSearchValue(e.target.value)
     setSearchError(false)
+  }
+  // ============== HANDLE CLEAR INPUT BUTTON ==================
+  const handleClear = ()=>{
+    setSearchQuery("")
+    setSearchValue("")
   }
   // =========== HANDLE SEARCH BUTTON PRESS ======================
   const handleOnClick=()=>{
@@ -53,16 +77,17 @@ export default function Search({ searchValue,setSearchError, onSearchButton,setR
           value={searchValue}
           onChange={(e)=>{handleOnChange(e)}}
           onKeyUpCapture={(e)=>{handleKeyDown(e)}}
+          autoComplete='off'
           placeholder="Search Anything"
-          className="w-full rounded-full bg-black/90 px-3 pl-10 text-lg focus:outline-none  py-2 outline-[#0a3c91] border border-[#0a3c91] "
-        />
+          className="w-full rounded-full bg-black/90 px-3 pl-10 text-lg focus:outline-none pr-8 py-2 outline-[#0a3c91] border border-[#0a3c91] "
+      />{searchQuery!=""&&searchQuery!==undefined?<MdOutlineClear onClick={()=>{handleClear()}} size={20} className=" items-center text-[#0a3c91] font-semibold right-3 absolute ml-3" />:null}
         </form>
       </div>
     {/*  ====================== SEARCH BUTTON PRESS ========================== */}
       <motion.div
       data-testid="search-button"
       whileTap={{ scale: 0.6 }}
-       onClick={()=>{handleOnClick()}} className="bg-[#0b3d91] hover:scale-100 cursor-pointer focus:outline-none focus:bg-transparent  text-lg py-2 px-6 text-white rounded-full ml-2">
+       onClick={()=>{handleOnClick()}} className="bg-[#0b3d91] hover:scale-100 cursor-pointer focus:outline-none focus:bg-transparent  text-lg py-2 px-1 mr-2 md:px-6 text-white rounded-full ml-2">
         Search
       </motion.div>
     </div>

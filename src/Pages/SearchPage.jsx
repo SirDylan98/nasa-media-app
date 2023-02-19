@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { BsSearch } from "react-icons/bs";
 import { BsEmojiFrown } from "react-icons/bs";
 import Search from "../Components/Search";
 import Logo from "../Components/Logo";
@@ -14,6 +14,7 @@ export default function SearchPage() {
   const [searched, setSearched] = useState();
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
   const [searchError, setSearchError] = useState(false);
 
 //  FETCHING PESISTED STATE FROM LOCAL STORAGE
@@ -27,7 +28,22 @@ export default function SearchPage() {
     }
     localStorage.setItem("isBackButton", "false");
   }, [searchError]);
-  console.log("results outside", results);
+  console.log("these are my final suggestions", suggestions);
+//===============SHORTERNING THE SUGGESTIONS==================
+  const truncateString = (str, num) => {
+    if (str?.length > num) {
+      return str.slice(0, num) + "...";
+    } else {
+      return str;
+    }
+  };
+  //====================ON SUGGESTION CLICK =====================
+  const handleSuggestionClick= (text)=>{
+    setSearchValue(text)
+    setSuggestions([])
+    onSearchButton()
+    
+  }
 
 // BUTTON TO SEARCH 
   const onSearchButton = () => {
@@ -74,7 +90,7 @@ export default function SearchPage() {
             /// persists to local storage
             localStorage.setItem("prevSearchResults",JSON.stringify(finalResponse));
             localStorage.setItem("prevSearchValue", searchValue);
-            console.log("Fucken Results", results);
+           
           }
         }
       } catch (e) {}
@@ -104,8 +120,17 @@ export default function SearchPage() {
           searchValue={searchValue}
           setSearchError={setSearchError}
           setResults={setResults}
+          setSuggestions={setSuggestions}
         />
       </div>
+      {/* ======================================= Suggestions ========================================= */}
+     {suggestions.length>0&&searchValue.length>0?suggestions.map(suggestion=>(
+      <div onClick={()=>{handleSuggestionClick(suggestion.data[0].description)}} className="  div-search-box-suggestions hover:bg-black/50  text-white   text-sm md:text-md"  key={suggestion?.data[0].nasa_id}
+      > <h1 className="border-b border-b-slate-300/0 pb-1 flex my-1 items-center"><BsSearch  className="mx-1"/> {truncateString(suggestion.data[0].title,35)} </h1>
+        </div>
+     )):null}
+
+
 {/* ===========================================SEARCH VALIDATION ERROR ====================================== */}
       <div className=" flex flex-col w-[100%] justify-center  mx-auto sm:w-[80%] md:w-[60%] lg:w-[40%]">
         <div>

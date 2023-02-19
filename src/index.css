@@ -10,6 +10,9 @@
   .div-search-box-component{
     @apply flex flex-col w-[95%] mt-2  mx-auto sm:w-[80%] md:w-[60%] lg:w-[40%] focus:bg-transparent  rounded-full shadow-lg bg-[#0b3d91] justify-center md:mx-auto
   }
+  .div-search-box-suggestions{
+    @apply flex flex-col w-[95%] mt-2   mx-auto sm:w-[80%] md:w-[60%] lg:w-[40%] focus:bg-transparent  rounded-xl shadow-lg bg-black/20 justify-center md:mx-auto
+  }
   .div-render-results-component{
     @apply w-full md:w-[90%]  grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3  gap-3  items-center  mx-auto px-2
   }
